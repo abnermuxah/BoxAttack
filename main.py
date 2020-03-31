@@ -8,7 +8,7 @@ import random
 from settings import *
 from sprites import *
 
-class Game:
+class Game: 
     def __init__(self):
         # initialize game window, etc
         pg.init()
@@ -22,8 +22,14 @@ class Game:
         # start a new game
         self.all_sprites = pg.sprite.Group()
         self.platforms = pg.sprite.Group()
+
         self.player = Player(self)
         self.all_sprites.add(self.player)
+
+        self.mob = mob(self)
+        self.all_sprites.add(self.mob)
+
+
         for plat in PLATFORM_LIST:
             p = Platform(*plat)
             self.all_sprites.add(p)
@@ -47,7 +53,12 @@ class Game:
             hits = pg.sprite.spritecollide(self.player, self.platforms, False)
             if hits:
                 self.player.pos.y = hits[0].rect.top
-                self.player.vel.y = 0
+                self.player.vel.y = 0    
+        if self.mob.vel.y > 0:
+            hits = pg.sprite.spritecollide(self.mob, self.platforms, False)
+            if hits:
+                self.mob.pos.y = hits[0].rect.top
+                self.mob.vel.y = 0
 
     def events(self):
         # Game Loop - events
@@ -63,7 +74,7 @@ class Game:
 
     def draw(self):
         # Game Loop - draw
-        self.screen.fill(BLACK)
+        self.screen.fill(LIGHTBLUE)
         self.all_sprites.draw(self.screen)
         # *after* drawing everything, flip the display
         pg.display.flip()

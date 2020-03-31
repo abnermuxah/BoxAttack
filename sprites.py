@@ -1,6 +1,3 @@
-# Sprite classes for platform game
-# este codigo nao sera necesario pra funcionar mas
-# pode ser util pra re aproveita lo
 import pygame as pg
 from settings import *
 vec = pg.math.Vector2
@@ -54,3 +51,26 @@ class Platform(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+
+class mob(pg.sprite.Sprite):
+    def __init__(self, game):
+        pg.sprite.Sprite.__init__(self)
+        self.game = game
+        self.image = pg.Surface((80, 40))
+        self.image.fill(RED)
+        self.rect = self.image.get_rect()
+        self.rect.center = (WIDTH / 2, HEIGHT / 2)
+        self.pos = vec(WIDTH / 2, HEIGHT / 2)
+        self.vel = vec(0, 0)
+        self.acc = vec(0, 0)
+    def update(self):
+        self.acc = vec(0, PLAYER_GRAV)
+        # equations of motion
+        self.vel += self.acc
+        self.pos += self.vel + 0.5 * self.acc
+        # nao permitir que o objeto ultrapasse o limite da janela
+        if self.pos.x > WIDTH:
+            self.pos.x = WIDTH
+        if self.pos.x < 0:
+            self.pos.x = 0
+        self.rect.midbottom = self.pos
