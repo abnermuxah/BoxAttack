@@ -3,11 +3,12 @@ TITLE = "Box Attack!"
 WIDTH = 800
 HEIGHT = 600
 FPS = 60
+RAND = 0
 
 # Player properties
 PLAYER_ACC = 0.5
 PLAYER_FRICTION = -0.12
-PLAYER_GRAV = 0.8
+PLAYER_GRAV = 0.8 #defaut 0.8
 
 # Starting platforms
 PLATFORM_LIST = [(0, HEIGHT - 40, WIDTH, 40)]

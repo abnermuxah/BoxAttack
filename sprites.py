@@ -60,14 +60,17 @@ class mob(pg.sprite.Sprite):
         self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH / 2, HEIGHT / 2)
-        self.pos = vec(WIDTH / 2, HEIGHT / 2)
+        self.pos = vec(50, 50)
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)
     def update(self):
         self.acc = vec(0, PLAYER_GRAV)
         # equations of motion
-        self.vel += self.acc
-        self.pos += self.vel + 0.5 * self.acc
+        if self.pos.x != 550 :
+            self.pos.x += 1
+        else:
+            self.vel += self.acc
+            self.pos += self.vel + 0.5 * self.acc
         # nao permitir que o objeto ultrapasse o limite da janela
         if self.pos.x > WIDTH:
             self.pos.x = WIDTH
