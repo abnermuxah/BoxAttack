@@ -16,9 +16,14 @@ class Player(pg.sprite.Sprite):
         self.acc = vec(0, 0)
 
     def jump(self):
-        # jump only if standing on a platform
+        # pular apenas quando tiver na plataforma
         self.rect.x += 1
         hits = pg.sprite.spritecollide(self, self.game.platforms, False)
+        self.rect.x -= 1
+        if hits:
+            self.vel.y = -20
+        # pular quando tiver em cima de uma caixa em repouso 
+        hits = pg.sprite.spritecollide(self, self.game.mobs, False)
         self.rect.x -= 1
         if hits:
             self.vel.y = -20
@@ -41,7 +46,10 @@ class Player(pg.sprite.Sprite):
             self.pos.x = WIDTH
         if self.pos.x < 0:
             self.pos.x = 0
+       
+
         self.rect.midbottom = self.pos
+        
 
 class Platform(pg.sprite.Sprite):
     def __init__(self, x, y, w, h):
@@ -69,7 +77,7 @@ class mob(pg.sprite.Sprite):
         self.acc = vec(0, PLAYER_GRAV)
         # equations of motion
         if self.pos.x <= self.push :
-            self.pos.x += 1.3
+            self.pos.x += 1.5
         else:
             self.pos.y +=  2
         # nao permitir que o objeto ultrapasse o limite da janela
@@ -86,7 +94,6 @@ class mob(pg.sprite.Sprite):
 
 
 
-
 class Platform2(pg.sprite.Sprite):
     def __init__(self, game):
         pg.sprite.Sprite.__init__(self)
@@ -96,5 +103,3 @@ class Platform2(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = 0
         self.rect.y = HEIGHT -40
-    
-    
