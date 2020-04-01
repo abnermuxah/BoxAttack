@@ -1,8 +1,3 @@
-# KidsCanCode - Game Development with Pygame video series
-# Jumpy! (a platform game) - Part 4
-# Video link: https://youtu.be/G8pYfkIajE8
-# Jumping
-
 import pygame as pg
 import random
 from settings import *
@@ -25,6 +20,7 @@ class Game:
 
         self.player = Player(self)
         self.all_sprites.add(self.player)
+
         
         #self.mob = mob(self)
         #self.all_sprites.add(self.mob)
@@ -34,10 +30,14 @@ class Game:
             self.all_sprites.add(self.mob)
 
 
-        for plat in PLATFORM_LIST:
-            p = Platform(*plat)
-            self.all_sprites.add(p)
-            self.platforms.add(p)
+        #    p = Platform(*plat)
+        #    self.all_sprites.add(p)
+        #    self.platforms.add(p)
+                #for plat in PLATFORM_LIST:
+
+        self.platform2 = Platform2(self)
+        self.all_sprites.add(self.platform2)
+        self.platforms.add(self.platform2)
         self.run()
 
     def run(self):
@@ -63,6 +63,7 @@ class Game:
             if hits:
                 self.mob.pos.y = hits[0].rect.top
                 self.mob.acc.y = 0
+        
 
     def events(self):
         # Game Loop - events

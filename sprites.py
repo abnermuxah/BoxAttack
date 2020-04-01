@@ -79,3 +79,19 @@ class mob(pg.sprite.Sprite):
         if self.pos.x < 0:
             self.pos.x = 0
         self.rect.midbottom = self.pos
+
+
+
+class Platform2(pg.sprite.Sprite):
+    def __init__(self, game):
+        pg.sprite.Sprite.__init__(self)
+        self.game = game
+        self.image = pg.Surface((WIDTH, 40))
+        self.image.fill(GREEN)
+        self.rect = self.image.get_rect()
+        self.rect.x = 0
+        self.rect.y = HEIGHT -40
+    
+    #def update(self):
+        #hits = pg.sprite.spritecollide(self.mob, self.platforms, False)
+
