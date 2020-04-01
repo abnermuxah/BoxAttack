@@ -57,12 +57,7 @@ class Game:
             hits = pg.sprite.spritecollide(self.player, self.platforms, False)
             if hits:
                 self.player.pos.y = hits[0].rect.top
-                self.player.vel.y = 0    
-        if self.mob.pos.y > 0:
-            hits = pg.sprite.spritecollide(self.mob, self.platforms, False)
-            if hits:
-                self.mob.pos.y = hits[0].rect.top
-                self.mob.acc.y = 0
+                self.player.vel.y = 0 
         
 
     def events(self):

@@ -2,7 +2,7 @@
 TITLE = "Box Attack!"
 WIDTH = 800
 HEIGHT = 600
-FPS = 200
+FPS = 60
 
 # Player properties
 PLAYER_ACC = 0.5
