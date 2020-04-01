@@ -1,4 +1,5 @@
 import pygame as pg
+from random import randint
 from settings import *
 vec = pg.math.Vector2
 
@@ -61,16 +62,17 @@ class mob(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH / 2, HEIGHT / 2)
         self.pos = vec(50, 50)
-        self.vel = vec(0, 0)
         self.acc = vec(0, 0)
+        self.righ_left = randint(0, 1)
+        self.push = randint(0, HEIGHT)
+
     def update(self):
         self.acc = vec(0, PLAYER_GRAV)
         # equations of motion
-        if self.pos.x != 550 :
-            self.pos.x += 1
+        if self.pos.x <= self.push :
+            self.pos.x += 1.3
         else:
-            self.vel += self.acc
-            self.pos += self.vel + 0.5 * self.acc
+            self.pos.y +=  2
         # nao permitir que o objeto ultrapasse o limite da janela
         if self.pos.x > WIDTH:
             self.pos.x = WIDTH
