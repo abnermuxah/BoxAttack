@@ -41,7 +41,6 @@ class Player(pg.sprite.Sprite):
             self.pos.x = WIDTH
         if self.pos.x < 0:
             self.pos.x = 0
-
         self.rect.midbottom = self.pos
 
 class Platform(pg.sprite.Sprite):
