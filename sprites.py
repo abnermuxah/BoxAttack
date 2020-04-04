@@ -22,8 +22,8 @@ class Player(pg.sprite.Sprite):
         self.rect.x -= 1
         if hits:
             self.vel.y = -20
-        # pular quando tiver em cima de uma caixa
-        hits = pg.sprite.spritecollide(self, self.game.mobs, False)
+        # pular quando tiver em cima de uma caixa 
+        hits = pg.sprite.spritecollide(self, self.game.boxes, False)
         self.rect.x -= 1
         if hits:
             self.vel.y = -20
@@ -52,7 +52,7 @@ class Player(pg.sprite.Sprite):
         
 
 class Platform(pg.sprite.Sprite):
-    def __init__(self, x, y, w, h):
+    def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((w, h))
         self.image.fill(GREEN)
@@ -60,7 +60,7 @@ class Platform(pg.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
-class mob(pg.sprite.Sprite):
+class Box(pg.sprite.Sprite):
     def __init__(self, game):
         pg.sprite.Sprite.__init__(self)
         self.game = game
@@ -89,11 +89,6 @@ class mob(pg.sprite.Sprite):
 
         hits = pg.sprite.spritecollide(self, self.game.platforms, False)
         if hits:
-            self.pos.y = hits[0].rect.top
-            self.acc.y = 0
-        hits = pg.sprite.spritecollide(self, self.game.mobs, False)
-        #hits = pg.sprite.groupcollide(self, self.game.mobs, False, False)
-        if hits and self.pos.y > 400:
             self.pos.y = hits[0].rect.top
             self.acc.y = 0
 

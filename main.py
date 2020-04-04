@@ -16,30 +16,24 @@ class Game:
     def new(self):
         # start a new game
         self.all_sprites = pg.sprite.Group()
-        #self.platforms = pg.sprite.Group()
-        self.mobs = pg.sprite.Group()
+        self.platforms = pg.sprite.Group()
+        self.boxes = pg.sprite.Group()
 
         self.player = Player(self)
         self.all_sprites.add(self.player)
 
         
-        #self.mob = mob(self)
-        #self.all_sprites.add(self.mob)
 
         for i in range(N_BOX):
-            self.mob = mob(self)
-            self.all_sprites.add(self.mob)
-            self.mobs.add(self.mob)
+            self.box = Box(self)
+            self.all_sprites.add(self.box)
+            self.boxes.add(self.box)
 
 
-        #    p = Platform(*plat)
-        #    self.all_sprites.add(p)
-        #    self.platforms.add(p)
-                #for plat in PLATFORM_LIST:
 
         self.platform2 = Platform2(self)
         self.all_sprites.add(self.platform2)
-        #self.platforms.add(self.platform2)
+        self.platforms.add(self.platform2)
 
         self.run()
 
@@ -57,12 +51,12 @@ class Game:
         self.all_sprites.update()
         # check if player hits a platform - only if falling
         if self.player.vel.y > 0:
-            hits = pg.sprite.spritecollide(self.player, self.platform2, False)
+            hits = pg.sprite.spritecollide(self.player, self.platforms, False)
             if hits:
                 self.player.pos.y = hits[0].rect.top
                 self.player.vel.y = 0 
         if self.player.vel.y > 0:
-            hits = pg.sprite.spritecollide(self.player, self.mobs, False)
+            hits = pg.sprite.spritecollide(self.player, self.boxes, False)
             if hits:
                 self.player.pos.y = hits[0].rect.top
                 self.player.vel.y = 0 
