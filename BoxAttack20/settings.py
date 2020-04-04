@@ -1,18 +1,7 @@
-# game options/settings
 TITLE = "Box Attack!"
 WIDTH = 800
 HEIGHT = 600
-FPS = 60
-
-# Player properties
-PLAYER_ACC = 0.5
-PLAYER_FRICTION = -0.12
-PLAYER_GRAV = 0.8
-MOBS_GRAV = 0.5
-
-#Boxes
-N_BOX = 8
-
+FPS = 30
 
 # define colors
 WHITE = (255, 255, 255)

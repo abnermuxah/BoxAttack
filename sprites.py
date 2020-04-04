@@ -22,7 +22,7 @@ class Player(pg.sprite.Sprite):
         self.rect.x -= 1
         if hits:
             self.vel.y = -20
-        # pular quando tiver em cima de uma caixa em repouso 
+        # pular quando tiver em cima de uma caixa
         hits = pg.sprite.spritecollide(self, self.game.mobs, False)
         self.rect.x -= 1
         if hits:
@@ -89,6 +89,11 @@ class mob(pg.sprite.Sprite):
 
         hits = pg.sprite.spritecollide(self, self.game.platforms, False)
         if hits:
+            self.pos.y = hits[0].rect.top
+            self.acc.y = 0
+        hits = pg.sprite.spritecollide(self, self.game.mobs, False)
+        #hits = pg.sprite.groupcollide(self, self.game.mobs, False, False)
+        if hits and self.pos.y > 400:
             self.pos.y = hits[0].rect.top
             self.acc.y = 0
 
