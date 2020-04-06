@@ -11,7 +11,7 @@ class Player(pg.sprite.Sprite):
         self.image.fill(YELLOW)
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH / 2, HEIGHT / 2)
-        self.pos = vec(WIDTH / 2, HEIGHT / 2)
+        self.pos = vec(WIDTH / 2+100, HEIGHT / 2)
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)
 
@@ -46,51 +46,47 @@ class Player(pg.sprite.Sprite):
             self.pos.x = WIDTH
         if self.pos.x < 0:
             self.pos.x = 0
-       
 
         self.rect.midbottom = self.pos
-        
 
-class Platform(pg.sprite.Sprite):
-    def __init__(self):
-        pg.sprite.Sprite.__init__(self)
-        self.image = pg.Surface((w, h))
-        self.image.fill(GREEN)
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
+
+
 
 class Box(pg.sprite.Sprite):
     def __init__(self, game):
         pg.sprite.Sprite.__init__(self)
         self.game = game
-        self.image = pg.Surface((80, 40))
+        self.image = pg.Surface((30, 40))
         self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH / 2, HEIGHT / 2)
-        self.pos = vec(50, 50)
+        self.pos = vec(WIDTH / 2, HEIGHT / 2)
+        self.vel = vec(0, 0)
         self.acc = vec(0, 0)
-        self.righ_left = randint(0, 1)
-        self.push = randint(0, HEIGHT)
 
     def update(self):
-        self.acc = vec(0, PLAYER_GRAV)
-        # equations of motion
-        if self.pos.x <= self.push :
-            self.pos.x += 1.5
-        else:
-            self.pos.y +=  2
         # nao permitir que o objeto ultrapasse o limite da janela
         if self.pos.x > WIDTH:
             self.pos.x = WIDTH
         if self.pos.x < 0:
             self.pos.x = 0
-        self.rect.midbottom = self.pos
-
+        
         hits = pg.sprite.spritecollide(self, self.game.platforms, False)
         if hits:
-            self.pos.y = hits[0].rect.top
-            self.acc.y = 0
+            self.rect.bottom = self.game.platform2.rect.top
+            self.vel = (0,0)
+        else:
+            self.acc = vec(0, BOX_GRAV)
+            self.acc.x += self.vel.x * BOX_FRICTION
+            self.vel += self.acc
+            self.pos += self.vel + 0.5 * self.acc
+        #self.rect.midbottom = self.pos
+    
+        #self.rect.midbottom = self.pos
+        
+
+        
+
 
 
 

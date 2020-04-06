@@ -2,15 +2,20 @@
 TITLE = "Box Attack!"
 WIDTH = 800
 HEIGHT = 600
-FPS = 200
+FPS = 60
 
 # Player properties
 PLAYER_ACC = 0.5
-PLAYER_FRICTION = -0.12
-PLAYER_GRAV = 0.8 
+PLAYER_FRICTION = -0.15
+PLAYER_GRAV = 1.2
+
+# Box Properties
+BOX_ACC = 1
+BOX_FRICTION = -1
+BOX_GRAV = 2
 
 #Boxes
-N_BOX = 4
+N_BOX = 2
 
 
 # define colors
