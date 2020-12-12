@@ -10,12 +10,12 @@ PLAYER_FRICTION = -0.15
 PLAYER_GRAV = 1.2
 
 # Box Properties
-BOX_ACC = 1
-BOX_FRICTION = -1
-BOX_GRAV = 2
+BOX_ACC = 0.15
+BOX_FRICTION = -0.05
+BOX_GRAV = 0.05
 
 #Boxes
-N_BOX = 2
+N_BOX = 5
 
 
 # define colors

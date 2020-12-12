@@ -1,10 +1,12 @@
 import pygame as pg
+from time import sleep
 from random import randint
 from settings import *
 vec = pg.math.Vector2
 
 class Player(pg.sprite.Sprite):
     def __init__(self, game):
+        
         pg.sprite.Sprite.__init__(self)
         self.game = game
         self.image = pg.Surface((30, 40))
@@ -22,8 +24,6 @@ class Player(pg.sprite.Sprite):
         self.rect.x -= 1
         if hits:
             self.vel.y = -20
-        # pular quando tiver em cima de uma caixa 
-        hits = pg.sprite.spritecollide(self, self.game.boxes, False)
         self.rect.x -= 1
         if hits:
             self.vel.y = -20
@@ -54,41 +54,38 @@ class Player(pg.sprite.Sprite):
 
 class Box(pg.sprite.Sprite):
     def __init__(self, game):
+        
         pg.sprite.Sprite.__init__(self)
         self.game = game
         self.image = pg.Surface((30, 40))
         self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH / 2, HEIGHT / 2)
-        self.pos = vec(WIDTH / 2, HEIGHT / 2)
+
+      
+        self.rand_x = randint(0,WIDTH)
+        self.rand_y = randint(0,100)
+        self.pos = vec(self.rand_x, self.rand_y)
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)
 
+
     def update(self):
-        # nao permitir que o objeto ultrapasse o limite da janela
-        if self.pos.x > WIDTH:
-            self.pos.x = WIDTH
-        if self.pos.x < 0:
-            self.pos.x = 0
+        self.acc = vec(0, BOX_GRAV)
+        # apply friction
+        self.acc.x += self.vel.x * BOX_FRICTION
+        # equations of motion
+        self.vel += self.acc
+        self.pos += self.vel + 0.5 * self.acc
         
-        hits = pg.sprite.spritecollide(self, self.game.platforms, False)
-        if hits:
-            self.rect.bottom = self.game.platform2.rect.top
-            self.vel = (0,0)
-        else:
-            self.acc = vec(0, BOX_GRAV)
-            self.acc.x += self.vel.x * BOX_FRICTION
-            self.vel += self.acc
-            self.pos += self.vel + 0.5 * self.acc
-        #self.rect.midbottom = self.pos
-    
-        #self.rect.midbottom = self.pos
+        self.rect.midbottom = self.pos
+
+
+         
         
 
         
-
-
-
+  
 
 class Platform2(pg.sprite.Sprite):
     def __init__(self, game):

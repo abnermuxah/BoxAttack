@@ -1,5 +1,6 @@
 import pygame as pg
-import random
+from random import randint
+from time import sleep
 from settings import *
 from sprites import *
 
@@ -23,19 +24,33 @@ class Game:
         self.all_sprites.add(self.player)
 
         
+    
+        
+        self.box1 = Box(self)
+        self.boxes.add(self.box1)
+        self.all_sprites.add(self.box1)
 
+        self.box2 = Box(self)
+        self.boxes.add(self.box2)
+        self.all_sprites.add(self.box2)
 
-        for i in range(N_BOX):
-            self.box = Box(self)
-            self.all_sprites.add(self.box)
-            self.boxes.add(self.box)
+        self.box3 = Box(self)
+        self.boxes.add(self.box3)
+        self.all_sprites.add(self.box3)
 
+        self.box4 = Box(self)
+        self.boxes.add(self.box4)
+        self.all_sprites.add(self.box4)
 
-        #    p = Platform(*plat)
-        #    self.all_sprites.add(p)
-        #    self.platforms.add(p)
-                #for plat in PLATFORM_LIST:
+        self.box5 = Box(self)
+        self.boxes.add(self.box5)
+        self.all_sprites.add(self.box5)
 
+        self.box6 = Box(self)
+        self.boxes.add(self.box6)
+        self.all_sprites.add(self.box6)
+
+            
         self.platform2 = Platform2(self)
         self.all_sprites.add(self.platform2)
         self.platforms.add(self.platform2)
@@ -60,11 +75,57 @@ class Game:
             if hits:
                 self.player.pos.y = hits[0].rect.top
                 self.player.vel.y = 0
-        if self.player.vel.y > 0:
-            hits = pg.sprite.spritecollide(self.player, self.boxes, False)
+        if self.box1.vel.y > 0:
+            hits = pg.sprite.spritecollide(self.box1, self.platforms, False)
             if hits:
-                self.player.pos.y = hits[0].rect.top
-                self.player.vel.y = 0
+                self.rand_x = randint(0,WIDTH)
+                self.rand_y = randint(0,220)
+                self.box1.pos = vec(self.rand_x,self.rand_y)
+                self.box1.vel = vec(0, 0)
+                self.box1.acc = vec(0, 0)
+        if self.box2.vel.y > 0:
+            hits = pg.sprite.spritecollide(self.box2, self.platforms, False)
+            if hits:
+                self.rand_x = randint(0,WIDTH)
+                self.rand_y = randint(0,50)
+                self.box2.pos = vec(self.rand_x,self.rand_y)
+                self.box2.vel = vec(0, 0)
+                self.box2.acc = vec(0, 0)
+        if self.box3.vel.y > 0:
+            hits = pg.sprite.spritecollide(self.box3, self.platforms, False)
+            if hits:
+                self.rand_x = randint(0,WIDTH)
+                self.rand_y = randint(0,150)
+                self.box3.pos = vec(self.rand_x,self.rand_y)
+                self.box3.vel = vec(0, 0)
+                self.box3.acc = vec(0, 0)
+        if self.box4.vel.y > 0:
+            hits = pg.sprite.spritecollide(self.box4, self.platforms, False)
+            if hits:
+                self.rand_x = randint(0,WIDTH)
+                self.rand_y = randint(0,150)
+                self.box4.pos = vec(self.rand_x,self.rand_y)
+                self.box4.vel = vec(0, 0)
+                self.box4.acc = vec(0, 0)
+        if self.box5.vel.y > 0:
+            hits = pg.sprite.spritecollide(self.box5, self.platforms, False)
+            if hits:
+                self.rand_x = randint(0,WIDTH)
+                self.rand_y = randint(0,150)
+                self.box5.pos = vec(self.rand_x,self.rand_y)
+                self.box5.vel = vec(0, 0)
+                self.box5.acc = vec(0, 0)
+        if self.box6.vel.y > 0:
+            hits = pg.sprite.spritecollide(self.box5, self.platforms, False)
+            if hits:
+                self.rand_x = randint(0,WIDTH)
+                self.rand_y = randint(0,15)
+                self.box6.pos = vec(self.rand_x,self.rand_y)
+                self.box6.vel = vec(0, 0)
+                self.box6.acc = vec(0, 0)
+        
+        
+        
 
     def events(self):
         # Game Loop - events
