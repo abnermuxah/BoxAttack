@@ -1,6 +1,7 @@
 import pygame as pg
 from time import sleep
 from random import randint
+from random import randrange
 from settings import *
 vec = pg.math.Vector2
 
@@ -57,13 +58,13 @@ class Box(pg.sprite.Sprite):
         
         pg.sprite.Sprite.__init__(self)
         self.game = game
-        self.image = pg.Surface((30, 40))
+        self.image = pg.Surface((40, 40))
         self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH / 2, HEIGHT / 2)
 
       
-        self.rand_x = randint(0,WIDTH)
+        self.rand_x = randrange(0,WIDTH,40)
         self.rand_y = randint(0,100)
         self.pos = vec(self.rand_x, self.rand_y)
         self.vel = vec(0, 0)
@@ -96,3 +97,32 @@ class Platform2(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = 0
         self.rect.y = HEIGHT -40
+
+
+class Star(pg.sprite.Sprite):
+    def __init__(self, game):
+        
+        pg.sprite.Sprite.__init__(self)
+        self.game = game
+        self.image = pg.Surface((20, 20))
+        self.image.fill(WHITE)
+        self.rect = self.image.get_rect()
+        self.rect.center = (WIDTH / 2, HEIGHT / 2)
+
+      
+        self.rand_x = randrange(0,WIDTH,20)
+        self.rand_y = randint(0,100)
+        self.pos = vec(self.rand_x, self.rand_y)
+        self.vel = vec(0, 0)
+        self.acc = vec(0, 0)
+
+
+    def update(self):
+        self.acc = vec(0, BOX_GRAV)
+        # apply friction
+        self.acc.x += self.vel.x * BOX_FRICTION
+        # equations of motion
+        self.vel += self.acc
+        self.pos += self.vel + 0.5 * self.acc
+        
+        self.rect.midbottom = self.pos
