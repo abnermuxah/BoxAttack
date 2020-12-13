@@ -1,4 +1,5 @@
 import pygame as pg
+from os import path
 from random import randint
 from random import randrange
 from time import sleep
@@ -14,9 +15,22 @@ class Game:
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
         self.running = True
-
+        self.font_name = pg.font.match_font(FONT_NAME)
+        self.load_data()
+        self.score = 0
+    
+    def load_data(self):
+        # carregar o score
+        self.dir = path.dirname(__file__)
+        with open(path.join(self.dir, HS_FILE), 'r') as f:
+            try:
+                self.highscore = int(f.read())
+            except:
+                self.highscore = 0
+    
     def new(self):
         # start a new game
+        
         self.all_sprites = pg.sprite.Group()
         self.platforms = pg.sprite.Group()
         self.boxes = pg.sprite.Group()
@@ -25,7 +39,7 @@ class Game:
         self.player = Player(self)
         self.all_sprites.add(self.player)
 
-        
+      
     
         
         self.box1 = Box(self)
@@ -60,7 +74,7 @@ class Game:
         self.platform2 = Platform2(self)
         self.all_sprites.add(self.platform2)
         self.platforms.add(self.platform2)
-
+    
         self.run()
 
     def run(self):
@@ -76,6 +90,8 @@ class Game:
         # Game Loop - Update
         self.all_sprites.update()
         # check if player hits a platform - only if falling
+
+        
         if self.player.vel.y > 0:
             hits = pg.sprite.spritecollide(self.player, self.platforms, False)
             if hits:
@@ -138,6 +154,21 @@ class Game:
                 self.star.vel = vec(0, 0)
                 self.star.acc = vec(0, 0)
 
+        hits = pg.sprite.spritecollide(self.player, self.boxes, False)
+        if hits:
+            self.score += -1 
+            
+
+        hits = pg.sprite.spritecollide(self.player, self.stars, False)
+        if hits:
+            self.score += 1
+            self.rand_x = randint(0,WIDTH)
+            self.rand_y = randint(0,15)
+            self.star.pos = vec(self.rand_x,self.rand_y)
+            self.star.vel = vec(0, 0)
+            self.star.acc = vec(0, 0)
+
+
         
         
         
@@ -154,26 +185,73 @@ class Game:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_UP:
                     self.player.jump()
+            if self.score < 0:
+                pg.quit()
 
     def draw(self):
         # Game Loop - draw
         self.screen.fill(LIGHTBLUE)
         self.all_sprites.draw(self.screen)
         # *after* drawing everything, flip the display
+        self.draw_text('STARS: '+str(self.score), 35, YELLOW, 80, 20)
         pg.display.flip()
 
+
     def show_start_screen(self):
-        # game splash/start screen
-        pass
+        self.screen.fill(BLACK)
+        self.draw_text(TITLE, 48, WHITE, WIDTH / 2, HEIGHT / 4)
+        self.draw_text("Setas para mover, cima pra pular", 22, WHITE, WIDTH / 2, HEIGHT / 2)
+        self.draw_text("Precione qualquer tecla pra iniciar", 22, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
+        self.draw_text("Maior Score: " + str(self.highscore), 22, WHITE, WIDTH / 2, 15)
+        pg.display.flip()
+        self.wait_for_key()
+        
+
+        pg.display.flip()
+    
+
 
     def show_go_screen(self):
         # game over/continue
-        pass
+        print(self.score)
+        if self.score < 0:
+            if self.running:
+                return
+            self.screen.fill(BGCOLOR)
+            self.draw_text("GAME OVER", 48, WHITE, WIDTH / 2, HEIGHT / 4)
+            self.draw_text("Score: " + str(self.score), 22, WHITE, WIDTH / 2, HEIGHT / 2)
+            self.draw_text("Press a key to play again", 22, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
+            if self.score > self.highscore:
+                self.highscore = self.score
+                self.draw_text("NEW HIGH SCORE!", 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
+                with open(path.join(self.dir, HS_FILE), 'w') as f:
+                    f.write(str(self.score))
+            else:
+                self.draw_text("High Score: " + str(self.highscore), 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
+            pg.display.flip()
+            self.wait_for_key()
 
+    def wait_for_key(self):
+        waiting = True
+        while waiting:
+            self.clock.tick(FPS)
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    waiting = False
+                    self.running = False
+                if event.type == pg.KEYUP:
+                    waiting = False
+
+
+    def draw_text(self, text, size, color, x, y):
+        font = pg.font.Font(self.font_name, size)
+        text_surface = font.render(text, True, color)
+        text_rect = text_surface.get_rect()
+        text_rect.midtop = (x, y)
+        self.screen.blit(text_surface, text_rect)
 g = Game()
 g.show_start_screen()
 while g.running:
     g.new()
     g.show_go_screen()
-    print(g.player.vel)
 pg.quit()

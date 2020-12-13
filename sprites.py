@@ -8,6 +8,9 @@ vec = pg.math.Vector2
 class Player(pg.sprite.Sprite):
     def __init__(self, game):
         
+
+
+
         pg.sprite.Sprite.__init__(self)
         self.game = game
         self.image = pg.Surface((30, 40))
@@ -17,6 +20,7 @@ class Player(pg.sprite.Sprite):
         self.pos = vec(WIDTH / 2+100, HEIGHT / 2)
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)
+
 
     def jump(self):
         # pular apenas quando tiver na plataforma
@@ -49,6 +53,9 @@ class Player(pg.sprite.Sprite):
             self.pos.x = 0
 
         self.rect.midbottom = self.pos
+        
+        
+        
 
 
 
@@ -126,3 +133,4 @@ class Star(pg.sprite.Sprite):
         self.pos += self.vel + 0.5 * self.acc
         
         self.rect.midbottom = self.pos
+
