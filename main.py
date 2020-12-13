@@ -18,6 +18,7 @@ class Game:
         self.font_name = pg.font.match_font(FONT_NAME)
         self.load_data()
         self.score = 0
+        self.max_score = 0
     
     def load_data(self):
         # carregar o score
@@ -91,7 +92,9 @@ class Game:
         self.all_sprites.update()
         # check if player hits a platform - only if falling
 
-        
+        if self.score < 0:
+            self.playing = False
+
         if self.player.vel.y > 0:
             hits = pg.sprite.spritecollide(self.player, self.platforms, False)
             if hits:
@@ -162,6 +165,7 @@ class Game:
         hits = pg.sprite.spritecollide(self.player, self.stars, False)
         if hits:
             self.score += 1
+            self.max_score += 1
             self.rand_x = randint(0,WIDTH)
             self.rand_y = randint(0,15)
             self.star.pos = vec(self.rand_x,self.rand_y)
@@ -185,14 +189,16 @@ class Game:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_UP:
                     self.player.jump()
-            if self.score < 0:
-                pg.quit()
+            
+                
+    
+                
+                
 
     def draw(self):
         # Game Loop - draw
         self.screen.fill(LIGHTBLUE)
         self.all_sprites.draw(self.screen)
-        # *after* drawing everything, flip the display
         self.draw_text('STARS: '+str(self.score), 35, YELLOW, 80, 20)
         pg.display.flip()
 
@@ -205,31 +211,26 @@ class Game:
         self.draw_text("Maior Score: " + str(self.highscore), 22, WHITE, WIDTH / 2, 15)
         pg.display.flip()
         self.wait_for_key()
-        
-
         pg.display.flip()
     
 
 
     def show_go_screen(self):
         # game over/continue
-        print(self.score)
-        if self.score < 0:
-            if self.running:
-                return
-            self.screen.fill(BGCOLOR)
-            self.draw_text("GAME OVER", 48, WHITE, WIDTH / 2, HEIGHT / 4)
-            self.draw_text("Score: " + str(self.score), 22, WHITE, WIDTH / 2, HEIGHT / 2)
-            self.draw_text("Press a key to play again", 22, WHITE, WIDTH / 2, HEIGHT * 3 / 4)
-            if self.score > self.highscore:
-                self.highscore = self.score
-                self.draw_text("NEW HIGH SCORE!", 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
-                with open(path.join(self.dir, HS_FILE), 'w') as f:
-                    f.write(str(self.score))
-            else:
-                self.draw_text("High Score: " + str(self.highscore), 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
-            pg.display.flip()
-            self.wait_for_key()
+        if not self.running:
+            return
+        self.screen.fill(BGCOLOR)
+        self.draw_text("PERDEU PLAYBOY", 48, WHITE, WIDTH / 2, HEIGHT / 4)
+        self.draw_text("Score: " + str(self.max_score), 22, WHITE, WIDTH / 2, HEIGHT / 2)
+        if self.max_score > self.highscore:
+            self.highscore = self.max_score
+            self.draw_text("NOVO SCORE!", 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
+            with open(path.join(self.dir, HS_FILE), 'w') as f:
+                f.write(str(self.max_score))
+        else:
+            self.draw_text("Score: " + str(self.highscore), 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
+        pg.display.flip()
+        self.wait_for_key()
 
     def wait_for_key(self):
         waiting = True
@@ -241,7 +242,6 @@ class Game:
                     self.running = False
                 if event.type == pg.KEYUP:
                     waiting = False
-
 
     def draw_text(self, text, size, color, x, y):
         font = pg.font.Font(self.font_name, size)

@@ -7,10 +7,6 @@ vec = pg.math.Vector2
 
 class Player(pg.sprite.Sprite):
     def __init__(self, game):
-        
-
-
-
         pg.sprite.Sprite.__init__(self)
         self.game = game
         self.image = pg.Surface((30, 40))
@@ -51,7 +47,6 @@ class Player(pg.sprite.Sprite):
             self.pos.x = WIDTH
         if self.pos.x < 0:
             self.pos.x = 0
-
         self.rect.midbottom = self.pos
         
         
@@ -61,8 +56,7 @@ class Player(pg.sprite.Sprite):
 
 
 class Box(pg.sprite.Sprite):
-    def __init__(self, game):
-        
+    def __init__(self, game): 
         pg.sprite.Sprite.__init__(self)
         self.game = game
         self.image = pg.Surface((40, 40))
@@ -84,8 +78,7 @@ class Box(pg.sprite.Sprite):
         self.acc.x += self.vel.x * BOX_FRICTION
         # equations of motion
         self.vel += self.acc
-        self.pos += self.vel + 0.5 * self.acc
-        
+        self.pos += self.vel + 0.5 * self.acc 
         self.rect.midbottom = self.pos
 
 
@@ -130,7 +123,6 @@ class Star(pg.sprite.Sprite):
         self.acc.x += self.vel.x * BOX_FRICTION
         # equations of motion
         self.vel += self.acc
-        self.pos += self.vel + 0.5 * self.acc
-        
+        self.pos += self.vel + 0.5 * self.acc 
         self.rect.midbottom = self.pos
 
