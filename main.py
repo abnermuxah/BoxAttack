@@ -172,12 +172,6 @@ class Game:
             self.star.vel = vec(0, 0)
             self.star.acc = vec(0, 0)
 
-
-        
-        
-        
-        
-
     def events(self):
         # Game Loop - events
         for event in pg.event.get():
@@ -189,19 +183,13 @@ class Game:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_UP:
                     self.player.jump()
-            
-                
-    
-                
-                
-
+                        
     def draw(self):
         # Game Loop - draw
         self.screen.fill(LIGHTBLUE)
         self.all_sprites.draw(self.screen)
         self.draw_text('STARS: '+str(self.score), 35, YELLOW, 80, 20)
         pg.display.flip()
-
 
     def show_start_screen(self):
         self.screen.fill(BLACK)
@@ -213,22 +201,20 @@ class Game:
         self.wait_for_key()
         pg.display.flip()
     
-
-
     def show_go_screen(self):
         # game over/continue
         if not self.running:
             return
         self.screen.fill(BGCOLOR)
         self.draw_text("PERDEU PLAYBOY", 48, WHITE, WIDTH / 2, HEIGHT / 4)
-        self.draw_text("Score: " + str(self.max_score), 22, WHITE, WIDTH / 2, HEIGHT / 2)
+        self.draw_text("SEU SCORE: " + str(self.max_score), 22, WHITE, WIDTH / 2, HEIGHT / 2)
         if self.max_score > self.highscore:
             self.highscore = self.max_score
             self.draw_text("NOVO SCORE!", 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
             with open(path.join(self.dir, HS_FILE), 'w') as f:
                 f.write(str(self.max_score))
         else:
-            self.draw_text("Score: " + str(self.highscore), 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
+            self.draw_text("MELHOR SCORE: " + str(self.highscore), 22, WHITE, WIDTH / 2, HEIGHT / 2 + 40)
         pg.display.flip()
         self.wait_for_key()
 
@@ -249,6 +235,7 @@ class Game:
         text_rect = text_surface.get_rect()
         text_rect.midtop = (x, y)
         self.screen.blit(text_surface, text_rect)
+
 g = Game()
 g.show_start_screen()
 while g.running:
