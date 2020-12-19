@@ -1,16 +1,14 @@
-import pygame as pg
-from os import path
-from random import randint
-from random import randrange
-from time import sleep
-from settings import *
-from sprites import *
+import pygame as pg # biblioteca pygame
+from os import path # biblioteca do OS salvar arquivo Score.txt
+from random import randint # bibioteca para posicionar aleatoriamente a caixa e cristal no eixo x e y
+from random import randrange # bibioteca para posicionar aleatoriamente a caixa e cristal no eixo x e y
+from settings import * # modularizar o codigo
+from sprites import * # modularizar o codigo
 
 class Game: 
-    def __init__(self):
+    def __init__(self): # construtor da classe GAME
         # initialize game window, etc
         pg.init()
-        pg.mixer.init()
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
@@ -21,7 +19,7 @@ class Game:
         self.max_score = 0
     
     def load_data(self):
-        # carregar o score
+        # carregar o score.txt
         self.dir = path.dirname(__file__)
         with open(path.join(self.dir, HS_FILE), 'r') as f:
             try:
@@ -29,8 +27,7 @@ class Game:
             except:
                 self.highscore = 0
     
-    def new(self):
-        # start a new game
+    def new(self): # iniciar novo jogo
         
         self.all_sprites = pg.sprite.Group()
         self.platforms = pg.sprite.Group()
@@ -78,7 +75,7 @@ class Game:
     
         self.run()
 
-    def run(self):
+    def run(self): #  enquanto jogador estver jogando...
         # Game Loop
         self.playing = True
         while self.playing:
@@ -87,7 +84,7 @@ class Game:
             self.update()
             self.draw()
 
-    def update(self):
+    def update(self): # atualizar todos os objetos em (FPS) 
         # Game Loop - Update
         self.all_sprites.update()
         # check if player hits a platform - only if falling
@@ -172,7 +169,7 @@ class Game:
             self.star.vel = vec(0, 0)
             self.star.acc = vec(0, 0)
 
-    def events(self):
+    def events(self): # Acionar Eventos (Pular) (Andar) (Fechar Jogo) Etc
         # Game Loop - events
         for event in pg.event.get():
             # check for closing window
@@ -184,14 +181,14 @@ class Game:
                 if event.key == pg.K_UP:
                     self.player.jump()
                         
-    def draw(self):
+    def draw(self): # Desenhar na tela de fundo (BG_AZUL) e (PONTUAÇÃO)
         # Game Loop - draw
         self.screen.fill(LIGHTBLUE)
         self.all_sprites.draw(self.screen)
         self.draw_text('STARS: '+str(self.score), 35, YELLOW, 80, 20)
         pg.display.flip()
 
-    def show_start_screen(self):
+    def show_start_screen(self): # TELA INICIAL 
         self.screen.fill(BLACK)
         self.draw_text(TITLE, 48, WHITE, WIDTH / 2, HEIGHT / 4)
         self.draw_text("Setas para mover, cima pra pular", 22, WHITE, WIDTH / 2, HEIGHT / 2)
@@ -201,8 +198,8 @@ class Game:
         self.wait_for_key()
         pg.display.flip()
     
-    def show_go_screen(self):
-        # game over/continue
+    def show_go_screen(self): # TELA GAME OVER
+        
         if not self.running:
             return
         self.screen.fill(BGCOLOR)
@@ -218,7 +215,7 @@ class Game:
         pg.display.flip()
         self.wait_for_key()
 
-    def wait_for_key(self):
+    def wait_for_key(self): # AGUARDAR A TECLA QUIT PRA FECHAR O JOGO
         waiting = True
         while waiting:
             self.clock.tick(FPS)
@@ -229,7 +226,7 @@ class Game:
                 if event.type == pg.KEYUP:
                     waiting = False
 
-    def draw_text(self, text, size, color, x, y):
+    def draw_text(self, text, size, color, x, y): # FUNÇÃO QUE ESCREVE TEXTO NA JANELA DE PROJEÇÃO
         font = pg.font.Font(self.font_name, size)
         text_surface = font.render(text, True, color)
         text_rect = text_surface.get_rect()

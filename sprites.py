@@ -19,7 +19,6 @@ class Player(pg.sprite.Sprite):
 
 
     def jump(self):
-        # pular apenas quando tiver na plataforma
         self.rect.x += 1
         hits = pg.sprite.spritecollide(self, self.game.platforms, False)
         self.rect.x -= 1
@@ -49,11 +48,6 @@ class Player(pg.sprite.Sprite):
             self.pos.x = 0
         self.rect.midbottom = self.pos
         
-        
-        
-
-
-
 
 class Box(pg.sprite.Sprite):
     def __init__(self, game): 
@@ -71,7 +65,6 @@ class Box(pg.sprite.Sprite):
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)
 
-
     def update(self):
         self.acc = vec(0, BOX_GRAV)
         # apply friction
@@ -82,12 +75,6 @@ class Box(pg.sprite.Sprite):
         self.rect.midbottom = self.pos
 
 
-         
-        
-
-        
-  
-
 class Platform2(pg.sprite.Sprite):
     def __init__(self, game):
         pg.sprite.Sprite.__init__(self)
@@ -97,7 +84,6 @@ class Platform2(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = 0
         self.rect.y = HEIGHT -40
-
 
 class Star(pg.sprite.Sprite):
     def __init__(self, game):
